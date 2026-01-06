@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday Dad! 🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    header {
+      text-align: center;
+      padding: 1rem;
+    }
+    header h1 {
+      margin: 0.5rem 0;
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      margin: 1rem auto;
+      background-image: url("baba.jpeg");
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    .modal-content h2 { color: #667eea; }
+
+    .music-control {
+      margin-bottom: 1rem;
+    }
+
+    .music-control button {
+      margin: 0 0.3rem;
+    }
+    .typing-dots {
+      display: inline-block;
+    }
+    .typing-dots span {
+      animation: blink 1.4s infinite both;
+      display: inline-block;
+      font-size: 1.2rem;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      20% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
+    .open-letter-btn {
+      padding: 0.75rem 1.4rem;
+      font-size: 1rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease;
+    }
+    .open-letter-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .input-field {
+      padding: 0.7rem;
+      width: 80%;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    
+    .submit-btn {
+      padding: 0.6rem 1.4rem;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .submit-btn:hover {
+      background: #5568d3;
+    }
+    
+    .close-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: none;
+      color: #666;
+      text-decoration: underline;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    
+    .letter-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 998;
+      backdrop-filter: blur(4px);
+    }
+    
+    .secret-letter {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 18px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      z-index: 999;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      transition: all 0.3s ease;
+      animation: glowFade 0.6s ease-in-out;
+    }
+    
+    .letter-image {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .birthday-top-banner {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      border-bottom: 4px solid #fff;
+      border-radius: 0 0 18px 18px;
+      padding: 1.1rem 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: pulseBanner 2.5s ease-in-out infinite;
+      z-index: 1000;
+      position: relative;
+    }
+    
+    .birthday-banner-content {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      letter-spacing: 0.5px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .sparkle {
+      animation: sparklePop 2s infinite ease-in-out;
+      display: inline-block;
+    }
+    
+    @keyframes sparklePop {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.8; }
+    }
+    
+    @keyframes pulseBanner {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+    }
+    
+    
+    
+    @keyframes glowFade {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    @keyframes floatBanner {
+      0% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+    /* Video Modal Styles */
+.video-modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 95%;
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+  position: relative;
+  text-align: center;
+}
+
+.video-title {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 16px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  color: #667eea;
+  transform: scale(1.2);
+}
+.letter-image-wrapper {
+  max-width: 90vw;
+  max-height: 70vh;
+  overflow: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.letter-image {
+  max-width: 100%;
+  max-height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.letter-controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+/* 📱 Mobile Responsiveness */
+@media (max-width: 600px) {
+  body {
+    padding: 0 0.5rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+  }
+
+
+  button, .submit-btn, .open-letter-btn {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .modal-content,
+  .video-modal-content {
+    padding: 1rem;
+    max-width: 95%;
+  }
+
+  .video-title {
+    font-size: 1.2rem;
+  }
+
+  .birthday-banner-content {
+    font-size: 1rem;
+  }
+
+  .secret-letter {
+    width: 95%;
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .letter-image-wrapper {
+    max-height: 60vh;
+  }
+
+  .letter-controls button {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .close-btn {
+    font-size: 1.5rem;
+    top: 8px;
+    right: 12px;
+  }
+}   
+  </style>
+</head>
+<style>
+  .music-control {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .music-control button {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .music-control button:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .welcome-message {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  }
+  
+  .welcome-message p {
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0.5rem 0;
+  }
+</style>
+<body>
+  <header>
+    <h1>Happy Birthday Dad! 🎂</h1>
+    <div class="avatar"></div>
+    <p style="color:#fff; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Wishing you a wonderful day!</p>
+  </header>
+
+  <div class="music-control">
+    <button onclick="toggleMusic()" id="musicBtn">🎵 Play Music</button>
+    <button onclick="nextSong()">⏭️ Next Song</button>
+  </div>
+  
+  <div class="welcome-message">
+    <p>🎉 Today is your special day, Dad! 🎉</p>
+    <p>I hope this little website brings a smile to your face. Enjoy the music, read the letter, and watch the video when you're ready.</p>
+    <p>Thank you for everything you do. You mean the world to me! ❤️</p>
+  </div>
+
+  <div class="modal" id="birthdayModal">
+    <div class="modal-content">
+      <h2>🎉 Happy Birthday Dad! 🎂</h2>
+      <p>Wishing you the happiest of birthdays! Even though I might not be there in person, I'm thinking of you today. 💙</p>
+      <p>This is your special day, and I hope you enjoy every moment of it!</p>
+      <button onclick="closeModal()" style="padding: 0.75rem 1.5rem; background: #667eea; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold;">Close</button>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+
+  <audio id="musicPlayer" loop></audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const music = document.getElementById("musicPlayer");
+    const musicBtn = document.getElementById("musicBtn");
+
+    const songs = [
+      "birthday-song.mp3",
+      "punjabi-track1.mp3",
+      "romantic-vibe.mp3",
+      "bday-song-2.mp3",
+      "song-3-letter.mp3",
+      "birthday-song-5.mp3"
+    ];
+    let currentSongIndex = 0;
+
+    function playSong(index) {
+      currentSongIndex = index % songs.length;
+      music.src = songs[currentSongIndex];
+      music.volume = 0.3;
+      music.play().catch(() => {});
+      musicBtn.innerText = "Pause Music 🎵";
+    }
+
+    function playRandomSong() {
+      const index = Math.floor(Math.random() * songs.length);
+      playSong(index);
+    }
+
+    function nextSong() {
+      playSong(currentSongIndex + 1);
+    }
+
+    music.addEventListener("ended", nextSong);
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        musicBtn.innerText = "Pause Music 🎵";
+      } else {
+        music.pause();
+        musicBtn.innerText = "Play Music 🎵";
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("birthdayModal").style.display = "none";
+    }
+
+    function triggerBirthdayCelebration() {
+      document.getElementById("birthdayModal").style.display = "flex";
+      const duration = 6 * 1000;
+      const end = Date.now() + duration;
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+
+    // On page load
+    window.addEventListener("load", () => {
+      const today = new Date();
+      // Update birthday date as needed - currently set to July 23rd as example
+      const isBirthday = today.getDate() === 23 && today.getMonth() + 1 === 7;
+      
+      if (isBirthday) {
+        triggerBirthdayCelebration();
+    
+        // 🎉 Floating birthday banner
+        const banner = document.createElement("div");
+        banner.innerHTML = `
+          <div class="birthday-banner-content">
+            🎉 <span class="sparkle">✨</span> Happy Birthday Dad! 🎂 <span class="sparkle">🎈</span> <span class="sparkle">🎊</span>
+          </div>
+        `;
+        banner.className = "birthday-top-banner";
+        document.body.prepend(banner);
+      }
+    
+      playRandomSong();
+    });
+    
+    let wasBackgroundMusicPlaying = false;
+
+function openLetterPrompt() {
+  document.getElementById("letterModal").style.display = "flex";
+  document.getElementById("wrongPass").style.display = "none";
+  document.getElementById("letterPassword").value = "";
+}
+
+function checkLetterPassword() {
+  const input = document.getElementById("letterPassword").value.trim();
+  if (input === "1929") {
+    document.getElementById("letterModal").style.display = "none";
+    showLetter();
+  } else {
+    document.getElementById("wrongPass").style.display = "block";
+  }
+}
+
+function showLetter() {
+  const letter = document.getElementById("secretLetter");
+  const backdrop = document.getElementById("letterBackdrop");
+  const music = document.getElementById("letterMusic");
+  const bgMusic = document.getElementById("musicPlayer");
+
+  wasBackgroundMusicPlaying = !bgMusic.paused;
+  if (wasBackgroundMusicPlaying) bgMusic.pause();
+
+  letter.style.display = "block";
+  backdrop.style.display = "block";
+
+  setTimeout(() => {
+    letter.style.transform = "translate(-50%,-50%) scale(1)";
+  }, 100);
+
+  triggerLetterConfetti();
+
+  music.volume = 0;
+  music.play().catch(() => {});
+  let vol = 0;
+  const fadeIn = setInterval(() => {
+    if (vol < 0.5) {
+      vol += 0.05;
+      music.volume = vol;
+    } else {
+      clearInterval(fadeIn);
+    }
+  }, 200);
+}
+
+function closeLetter() {
+  const letter = document.getElementById("secretLetter");
+  const backdrop = document.getElementById("letterBackdrop");
+  const music = document.getElementById("letterMusic");
+  const bgMusic = document.getElementById("musicPlayer");
+
+  letter.style.display = "none";
+  backdrop.style.display = "none";
+  music.pause();
+  music.currentTime = 0;
+
+  if (wasBackgroundMusicPlaying) {
+    bgMusic.play().catch(() => {});
+  }
+}
+
+function closeLetterModal() {
+  document.getElementById("letterModal").style.display = "none";
+}
+
+function triggerLetterConfetti() {
+  const duration = 3 * 1000;
+  const end = Date.now() + duration;
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
+}
+
+// 💖 Video Modal with BG Music Control
+let videoLoaded = false;
+let videoIframe = null;
+
+function openVideoModal() {
+  const container = document.getElementById("videoContainer");
+
+  if (!videoLoaded) {
+    container.innerHTML = `
+      <iframe 
+        id="videoFrame"
+        src="https://drive.google.com/file/d/1xznVXTZaw2eXtJ_jsgyGIy_mfkOTaNzc/preview" 
+        allow="autoplay" allowfullscreen>
+      </iframe>
+    `;
+    videoLoaded = true;
+  }
+
+  document.getElementById("videoModal").style.display = "flex";
+
+  // Pause background music
+  const bgMusic = document.getElementById("musicPlayer");
+  if (!bgMusic.paused) {
+    bgMusic.pause();
+    wasBackgroundMusicPlaying = true;
+  } else {
+    wasBackgroundMusicPlaying = false;
+  }
+}
+
+function closeVideoModal() {
+  document.getElementById("videoModal").style.display = "none";
+
+  // Pause video by resetting src (but keep DOM node intact)
+  const iframe = document.getElementById("videoFrame");
+  if (iframe) {
+    const currentSrc = iframe.src;
+    iframe.src = "";
+    setTimeout(() => {
+      iframe.src = currentSrc; // Reloads, resumes from start unless Drive cached it
+    }, 10);
+  }
+
+  // Resume background music if it was playing
+  if (wasBackgroundMusicPlaying) {
+    const bgMusic = document.getElementById("musicPlayer");
+    bgMusic.play().catch(() => {});
+  }
+}
+
+let currentZoom = 1;
+
+function zoomLetter(direction) {
+  const img = document.getElementById("letterImg");
+  if (direction === "in") {
+    currentZoom += 0.1;
+  } else if (direction === "out" && currentZoom > 0.2) {
+    currentZoom -= 0.1;
+  }
+  img.style.transform = `scale(${currentZoom})`;
+}
+
+function resetZoom() {
+  const img = document.getElementById("letterImg");
+  currentZoom = 1;
+  img.style.transform = `scale(1)`;
+}
+
+
+  </script>
+
+<!-- Secret Letter + Video Trigger -->
+<div style="margin-bottom: 2rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+  <button onclick="openLetterPrompt()" class="open-letter-btn">Read Secret Letter 💌</button>
+  <button onclick="openVideoModal()" class="open-letter-btn">Watch Birthday Video 🎬</button>
+</div>
+
+
+<!-- 🔑 Password Modal -->
+<div class="modal" id="letterModal">
+  <div class="modal-content" style="position: relative; padding-top: 2.5rem;">
+    <!-- Close X Button -->
+    <span onclick="closeLetterModal()" 
+          style="
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            z-index: 2;
+          ">
+      &times;
+    </span>
+
+    <h2>💌 Secret Letter</h2>
+    <p style="font-style: italic; font-size: 0.9rem;">
+      Enter the password to unlock your special birthday letter.<br>
+      (You can update this password in the code if needed)
+    </p>
+    <input type="password" id="letterPassword" placeholder="Enter the password..." class="input-field" />
+    <br /><br />
+    <button onclick="checkLetterPassword()" class="submit-btn">Unlock 📜</button>
+    <p id="wrongPass" style="color:red; display:none; margin-top: 0.5rem;">Incorrect password. Please try again.</p>
+  </div>
+</div>
+<!-- 🎬 Secret Video Trigger -->
+
+
+<!-- 🎞️ Video Modal -->
+<div class="modal" id="videoModal">
+  <div class="video-modal-content">
+    <span class="close-btn" onclick="closeVideoModal()">&times;</span>
+    <div class="video-title">A Special Birthday Message for You 🎬</div>
+    <div class="video-wrapper" id="videoContainer">
+      <!-- iframe gets inserted here via JS -->
+    </div>
+  </div>
+</div>
+<!-- 🎀 Backdrop and Letter -->
+<div id="letterBackdrop" class="letter-backdrop"></div>
+<div id="secretLetter" class="secret-letter">
+  <h2>A Special Letter for You</h2>
+
+  <!-- 🔍 Controls -->
+  <div class="letter-controls">
+    <button onclick="zoomLetter('in')" class="submit-btn">🔍 Zoom In</button>
+    <button onclick="zoomLetter('out')" class="submit-btn">🔎 Zoom Out</button>
+    <button onclick="resetZoom()" class="submit-btn">🖼️ Fit to Screen</button>
+  </div>
+
+  <!-- 📜 Letter Image -->
+  <div class="letter-image-wrapper">
+    <img src="letterhand.jpeg" alt="Love Letter" class="letter-image" id="letterImg" />
+  </div>
+
+  <!-- 📤 Actions -->
+  <div style="margin-top: 1.8rem;">
+    <a href="letterhand.jpeg" download="HappyBirthday_Letter.jpg" class="submit-btn">📥 Download Letter</a>
+
+    <button onclick="closeLetter()">Close</button>
+  </div>
+</div>
+
+<!-- Letter Background Music -->
+<audio id="letterMusic" src="song-4-letter.mp3" preload="auto"></audio>
+
+</body>
+</html>
